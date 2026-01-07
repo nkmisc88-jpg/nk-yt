@@ -3,20 +3,14 @@
 OUTPUT="playlist.m3u"
 
 echo "#EXTM3U" > "$OUTPUT"
-echo "Channels file:" >> "$OUTPUT"
 
-cat channels.txt >> "$OUTPUT"
-echo "" >> "$OUTPUT"
+# Sun News Tamil LIVE
+STREAM=$(yt-dlp -g -f "best" "https://www.youtube.com/watch?v=9M02G5c6x6w" | head -n 1)
 
-while IFS="|" read -r NAME URL GROUP
-do
-  echo "Processing $NAME"
-
-  STREAM=$(yt-dlp -g "$URL" | head -n 1)
-
-  if [ -n "$STREAM" ]; then
-    echo "#EXTINF:-1 group-title=\"$GROUP\",$NAME" >> "$OUTPUT"
-    echo "$STREAM" >> "$OUTPUT"
-    echo "" >> "$OUTPUT"
-  fi
-done < channels.txt
+if [ -n "$STREAM" ]; then
+  echo '#EXTINF:-1 tvg-id="sunnews" group-title="News | Tamil",Sun News LIVE' >> "$OUTPUT"
+  echo "$STREAM" >> "$OUTPUT"
+  echo "" >> "$OUTPUT"
+else
+  echo "# Sun News stream not available at this time" >> "$OUTPUT"
+fi

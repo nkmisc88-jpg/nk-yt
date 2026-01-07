@@ -1,1 +1,28 @@
 
+name: Auto Update YouTube M3U
+
+on:
+  schedule:
+    - cron: "*/15 * * * *"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install yt-dlp
+        run: sudo apt update && sudo apt install yt-dlp -y
+
+      - name: Generate playlist
+        run: bash scripts/update.sh
+
+      - name: Commit updates
+        run: |
+          git config --global user.name "yt-m3u-bot"
+          git config --global user.email "bot@github.com"
+          git add playlist.m3u
+          git commit -m "Auto update playlist" || exit 0
+          git push

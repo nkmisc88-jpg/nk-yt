@@ -1,2 +1,3 @@
 #EXTM3U
-# Sun News stream not available at this time
+#EXTINF:-1 tvg-id="sunnews" group-title="News | Tamil",Sun News LIVE
+plugin://plugin.video.youtube/play/?video_id=9M02G5c6x6w

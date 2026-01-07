@@ -1,5 +1,4 @@
-
-name: Auto Update YouTube M3U
+name: Update Sun News Live
 
 on:
   schedule:
@@ -7,22 +6,21 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  update:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
 
       - name: Install yt-dlp
         run: sudo apt update && sudo apt install yt-dlp -y
 
-      - name: Generate playlist
+      - name: Update playlist
         run: bash scripts/update.sh
 
-      - name: Commit updates
+      - name: Commit changes
         run: |
-          git config --global user.name "yt-m3u-bot"
+          git config --global user.name "sunnews-bot"
           git config --global user.email "bot@github.com"
           git add playlist.m3u
-          git commit -m "Auto update playlist" || exit 0
+          git commit -m "Auto refresh Sun News stream" || exit 0
           git push
